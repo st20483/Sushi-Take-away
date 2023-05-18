@@ -1,14 +1,10 @@
-""" This programme lets user choose types of food, type in user's name, and order 
-food. Past orders can be seen in History GUI. If unsatisfactory, users can 
-cancel order. Information GUI tells users how to use programme. Details GUI 
-shows more details about the food when user clicks on image of one food.
-"""
+""" Testing how to put image as a button"""
 
-# version 1: Takeaway GUI
-# This GUI is the main GUI of the programme. From Information GUI and 
-# History GUI can be accessed from this GUI
 # Import all needed libraries for the programme
+import os
+os.system('cmd /c "pip install Pillow"')
 from tkinter import *
+from PIL import ImageTk, Image
 from functools import partial
 import tkinter.scrolledtext as st
 from datetime import date
@@ -23,7 +19,9 @@ class Takeaway:
     def __init__(self):
         """Initialising variables and setting up Takeaway GUI
         """
-        sushi_menu_list = [] # total is menu_list, and sushi_menu_list would be menu_list[i]
+        self.food1_image = ImageTk.PhotoImage(Image.open("images/salmon_sushi.ppm").resize((10, 10)))
+        
+        
         
         # common format for regular and large texts
         # large texts are found in headings and buttons
@@ -42,14 +40,14 @@ class Takeaway:
         self.takeaway_frame.grid()
         
         self.top_buttons_frame = Frame(self.takeaway_frame, bg=bg_color)
-        self.top_buttons_frame.grid(row=0, pady=10)
+        self.top_buttons_frame.grid(row=0, pady=5)
         
         # add History and Information button widgets
         self.history_button = Button(self.top_buttons_frame, text="History", fg=font_color, bg=btn_bg_color, font=large_font, width="12", command=self.open_history)
-        self.history_button.grid(row=0, column=0, padx=5)
+        self.history_button.grid(row=0, column=0, padx=10)
         
         self.information_button = Button(self.top_buttons_frame, text="Information", fg=font_color, bg=btn_bg_color, font=large_font, width="12", command=self.open_information)
-        self.information_button.grid(row=0, column=1, padx=5)        
+        self.information_button.grid(row=0, column=1, padx=10)        
         
         self.takeaway_heading = Label(self.takeaway_frame, text="Welcome to Sushi Takeaway", font=large_font, fg=font_color, bg=bg_color, justify="center")
         self.takeaway_heading.grid(row=1)
@@ -66,10 +64,8 @@ class Takeaway:
         self.food1_frame = LabelFrame(self.food_menu_frame, bg=bg_color, text="Salmon sushi", font=normal_font, fg=font_color, labelanchor="n")
         self.food1_frame.grid(row=0, column=0)
         
-        self.food1_image = PhotoImage(file="images/salmon_sushi.ppm")
-        # cannot resize image without PIL library, cannot import PIL library without downloading from Command Terminal
-        self.food1_image_label = Label(self.food1_frame, text="image here") # image=self.food1_image
-        self.food1_image_label.grid(row=0)
+        self.food1_image_label = Label(self.food1_frame, image=self.food1_image, bg=bg_color)
+        self.food1_image_label.grid(row=0)        
         
         self.food1_price = Label(self.food1_frame, text="$2.50", bg=bg_color, fg=font_color, font=normal_font)
         self.food1_price.grid(row=1)
@@ -109,13 +105,13 @@ class Takeaway:
         self.name_instructions_label.grid(row=1, column=0, columnspan=2, pady=5)
         
         self.bottom_buttons_frame = Frame(self.takeaway_frame, bg=bg_color)
-        self.bottom_buttons_frame.grid(row=5, pady=10)
+        self.bottom_buttons_frame.grid(row=5, pady=5)
         
         self.order_button = Button(self.bottom_buttons_frame, text="Order", font=large_font, bg=btn_bg_color, fg=font_color, width="12", command=self.order)
-        self.order_button.grid(row=0, column=0, padx=5)
+        self.order_button.grid(row=0, column=0, padx=10)
         
         self.cancel_order_button = Button(self.bottom_buttons_frame, text="Cancel order", font=large_font, bg=btn_bg_color, fg=font_color, width="12", command=self.cancel_order)
-        self.cancel_order_button.grid(row=0, column=1, padx=5)
+        self.cancel_order_button.grid(row=0, column=1, padx=10)
         
         self.exit_takeaway_button = Button(self.bottom_buttons_frame, text="Exit Programme", font=large_font, bg=btn_bg_color, fg=font_color, width = "26", command=quit)
         self.exit_takeaway_button.grid(row=1, column=0, columnspan=2, padx=5, pady=10)
