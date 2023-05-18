@@ -4,6 +4,9 @@ cancel order. Information GUI tells users how to use programme. Details GUI
 shows more details about the food when user clicks on image of one food.
 """
 
+# version 1: Takeaway GUI
+# This GUI is the main GUI of the programme. From Information GUI and 
+# History GUI can be accessed from this GUI
 # Import all needed libraries for the programme
 from tkinter import *
 from functools import partial
@@ -29,7 +32,7 @@ class Takeaway:
         large_font = ("Helvetica 17 bold")
         
         # color palette that is friendly to colour-blind people
-        bg_btn_color = "#7CA1CC"
+        btn_bg_color = "#7CA1CC"
         bg_color = "#A8B6CC"
         error_font_color = "#F05039"
         font_color = "#141414"
@@ -42,35 +45,57 @@ class Takeaway:
         self.top_buttons_frame.grid(row=0, pady=10)
         
         # add History and Information button widgets
-        self.history_button = Button(self.top_buttons_frame, text="History", fg=font_color, bg=bg_btn_color, font=large_font, width="12", command=self.open_history)
+        self.history_button = Button(self.top_buttons_frame, text="History", fg=font_color, bg=btn_bg_color, font=large_font, width="12", command=self.open_history)
         self.history_button.grid(row=0, column=0, padx=5)
         
-        self.information_button = Button(self.top_buttons_frame, text="Information", fg=font_color, bg=bg_btn_color, font=large_font, width="12", command=self.open_information)
+        self.information_button = Button(self.top_buttons_frame, text="Information", fg=font_color, bg=btn_bg_color, font=large_font, width="12", command=self.open_information)
         self.information_button.grid(row=0, column=1, padx=5)        
         
         self.takeaway_heading = Label(self.takeaway_frame, text="Welcome to Sushi Takeaway", font=large_font, fg=font_color, bg=bg_color, justify="center")
         self.takeaway_heading.grid(row=1)
         
-        # self.takeaway_description scrapped because same function but better in Information
+        # self.takeaway_description scrapped because same function but better in Information !!
         
         # provide instructions for users how to open Details GUI
-        self.takeaway_instruction = Label(self.takeaway_frame, text="Please click on images of each food for more details.", bg=bg_color, fg=font_color, font=normal_font)
-        self.takeaway_instruction.grid(row=2)
+        self.takeaway_instruction = Label(self.takeaway_frame, text="Please click on images of each food for more details.\nThe maximum amount per food you can order is 100.", bg=bg_color, fg=font_color, font=normal_font)
+        self.takeaway_instruction.grid(row=2) # may have to change this: no Details GUI !!
         
-        self.sushi_heading = Label(self.takeaway_frame, text="Sushi", bg=bg_color, fg=font_color, font=small_heading_font)
-        self.sushi_heading.grid(row=3, pady=10)
+        self.food_menu_frame = LabelFrame(self.takeaway_frame, bg=bg_color, text="Sushi", font=small_heading_font, fg=font_color)
+        self.food_menu_frame.grid(row=3, padx=5, pady=5)
         
-        self.sushi_menu_frame = Frame(self.takeaway_frame, bg=bg_color)
-        self.sushi_menu_frame.grid(row=4, padx=5, pady=5)
+        self.food1_frame = LabelFrame(self.food_menu_frame, bg=bg_color, text="Salmon sushi", font=normal_font, fg=font_color, labelanchor="n")
+        self.food1_frame.grid(row=0, column=0)
         
+        self.food1_image = PhotoImage(file="images/salmon_sushi.ppm")
+        # cannot resize image without PIL library, cannot import PIL library without downloading from Command Terminal
+        self.food1_image_label = Label(self.food1_frame, text="image here") # image=self.food1_image
+        self.food1_image_label.grid(row=0)
         
-        # foodds
+        self.food1_price = Label(self.food1_frame, text="$2.50", bg=bg_color, fg=font_color, font=normal_font)
+        self.food1_price.grid(row=1)
         
+        self.food1_quantity = IntVar(value=0)
+        # max food quantity is 100 because sushi takeaway is equipped to cater
+        # for only individuals and small groups up to 10 people
+        # wrap is True so bulk-buyers can go to maximum amount in one click
+        self.food1_quantity_spinbox = Spinbox(self.food1_frame, from_=0, to=100, increment="1", format="%.0f", fg=font_color, font=normal_font, textvariable=self.food1_quantity, justify="center", width=4, wrap=True)
+        self.food1_quantity_spinbox.grid(row=2)
+        
+        self.food2 = LabelFrame(self.food_menu_frame, bg=bg_color)
+        self.food2.grid(row=0, column=1)
+        
+        self.food3 = LabelFrame(self.food_menu_frame, bg=bg_color)
+        self.food3.grid(row=0, column=2)
+        
+        self.food4 = LabelFrame(self.food_menu_frame, bg=bg_color)
+        self.food4.grid(row=0, column=3)        
+        
+        # quantity use spinbox
         
         
         # Create frame for user's name input indentification purpose 
-        self.name_frame = Frame(self.takeaway_frame, bg=bg_color)
-        self.name_frame.grid(row=3)
+        self.name_frame = LabelFrame(self.takeaway_frame, bg=bg_color, text="Identification purposes only", font=small_heading_font, fg=font_color)
+        self.name_frame.grid(row=4, padx=5, pady=5)
             
         self.name_label = Label(self.name_frame, text="Name: ", bg=bg_color, fg=font_color, font=normal_font)
         self.name_label.grid(row=0, column=0, pady=5)
@@ -84,13 +109,16 @@ class Takeaway:
         self.name_instructions_label.grid(row=1, column=0, columnspan=2, pady=5)
         
         self.bottom_buttons_frame = Frame(self.takeaway_frame, bg=bg_color)
-        self.bottom_buttons_frame.grid(row=4, pady=10)
+        self.bottom_buttons_frame.grid(row=5, pady=10)
         
-        self.order_button = Button(self.bottom_buttons_frame, text="Order", font=large_font, bg=bg_btn_color, fg=font_color, width="12", command=self.order)
+        self.order_button = Button(self.bottom_buttons_frame, text="Order", font=large_font, bg=btn_bg_color, fg=font_color, width="12", command=self.order)
         self.order_button.grid(row=0, column=0, padx=5)
         
-        self.cancel_order_button = Button(self.bottom_buttons_frame, text="Cancel order", font=large_font, bg=bg_btn_color, fg=font_color, width="12", command=self.cancel_order)
+        self.cancel_order_button = Button(self.bottom_buttons_frame, text="Cancel order", font=large_font, bg=btn_bg_color, fg=font_color, width="12", command=self.cancel_order)
         self.cancel_order_button.grid(row=0, column=1, padx=5)
+        
+        self.exit_takeaway_button = Button(self.bottom_buttons_frame, text="Exit Programme", font=large_font, bg=btn_bg_color, fg=font_color, width = "26", command=quit)
+        self.exit_takeaway_button.grid(row=1, column=0, columnspan=2, padx=5, pady=10)
 
     def open_history(self):
         pass
@@ -103,6 +131,10 @@ class Takeaway:
     
     def cancel_order(self):
         pass
+    
+    # Terminate all GUIs
+    def quit(self):
+        self.destroy()    
     
 # main routine
 if __name__ == "__main__":
