@@ -1,14 +1,16 @@
-""" This programme lets user choose types of food, type in user's name, and order 
-food. Past orders can be seen in History GUI. If unsatisfactory, users can 
-cancel order. Information GUI tells users how to use programme. Details GUI 
-shows more details about the food when user clicks on image of one food.
-"""
+""" How to use texts files in Takeaway GUI """
+# menu txt file for display - relevant implication Future Proofing
+# history txt for order simulation and access by users - End-user Consideration
 
-# version 1: Takeaway GUI
+# version 1 testing: Takeaway GUI
 # This GUI is the main GUI of the programme. From Information GUI and 
 # History GUI can be accessed from this GUI
+
 # Import all needed libraries for the programme
+import os
+os.system('cmd /c "pip install Pillow"')
 from tkinter import *
+from PIL import ImageTk, Image
 from functools import partial
 import tkinter.scrolledtext as st
 from datetime import date
@@ -23,7 +25,36 @@ class Takeaway:
     def __init__(self):
         """Initialising variables and setting up Takeaway GUI
         """
-        sushi_menu_list = [] # total is menu_list, and sushi_menu_list would be menu_list[i]
+        with open("sushi_takeaway_menu.txt", "r") as menu_file:
+            self.raw_menu_file = menu_file.read().split("\n")
+            
+            # What if the file is accidentally deleted and there's FileNotFound Error?
+            
+        self.raw_menu_file.pop(0) # should put actual comment in remove()
+        self.raw_menu_file.pop(0) #same here
+        
+        self.food1 = self.raw_menu_file[0].split(", ")
+        self.food1_image_path = "images/" + self.food1[1]
+        print(self.food1_image_path)
+        self.food1_image = ImageTk.PhotoImage(Image.open(self.food1_image_path).resize((10, 10)))
+        
+        self.food2 = self.raw_menu_file[1].split(", ")
+        
+        self.food3 = self.raw_menu_file[2].split(", ")
+        
+        self.food4 = self.raw_menu_file[3].split(", ")
+        
+        self.food5 = self.raw_menu_file[4].split(", ")
+        
+        self.food6 = self.raw_menu_file[5].split(", ")
+        
+        self.food7 = self.raw_menu_file[6].split(", ")
+        
+        self.food8 = self.raw_menu_file[7].split(", ")
+        
+        
+        # don't forget to strip everytime string is used - list cannot be stripped
+        
         
         # common format for regular and large texts
         # large texts are found in headings and buttons
@@ -42,14 +73,14 @@ class Takeaway:
         self.takeaway_frame.grid()
         
         self.top_buttons_frame = Frame(self.takeaway_frame, bg=bg_color)
-        self.top_buttons_frame.grid(row=0, pady=10)
+        self.top_buttons_frame.grid(row=0, pady=5)
         
         # add History and Information button widgets
         self.history_button = Button(self.top_buttons_frame, text="History", fg=font_color, bg=btn_bg_color, font=large_font, width="12", command=self.open_history)
-        self.history_button.grid(row=0, column=0, padx=5)
+        self.history_button.grid(row=0, column=0, padx=10)
         
         self.information_button = Button(self.top_buttons_frame, text="Information", fg=font_color, bg=btn_bg_color, font=large_font, width="12", command=self.open_information)
-        self.information_button.grid(row=0, column=1, padx=5)        
+        self.information_button.grid(row=0, column=1, padx=10)        
         
         self.takeaway_heading = Label(self.takeaway_frame, text="Welcome to Sushi Takeaway", font=large_font, fg=font_color, bg=bg_color, justify="center")
         self.takeaway_heading.grid(row=1)
@@ -60,15 +91,16 @@ class Takeaway:
         self.takeaway_instruction = Label(self.takeaway_frame, text="Please click on images of each food for more details.\nThe maximum amount per food you can order is 100.", bg=bg_color, fg=font_color, font=normal_font)
         self.takeaway_instruction.grid(row=2) # may have to change this: no Details GUI !!
         
-        self.food_menu_frame = LabelFrame(self.takeaway_frame, bg=bg_color, text="Sushi", font=small_heading_font, fg=font_color)
-        self.food_menu_frame.grid(row=3, padx=5, pady=5)
+        # A frame to hold all food items like a menu
+        self.menu_frame = Frame(self.takeaway_frame, bg=bg_color)
+        self.menu_frame.grid(row=3, padx=5, pady=5)
         
-        self.food1_frame = LabelFrame(self.food_menu_frame, bg=bg_color, text="Salmon sushi", font=normal_font, fg=font_color, labelanchor="n")
+        # Contains one food dish and its general details without ingredients and food alerts
+        # LabelFrame for displaying food name and put its details in visual box
+        self.food1_frame = LabelFrame(self.menu_frame, bg=bg_color, text=self.food1[0].capitalize(), font=normal_font, fg=font_color, labelanchor="n")
         self.food1_frame.grid(row=0, column=0)
         
-        self.food1_image = PhotoImage(file="images/salmon_sushi.ppm")
-        # cannot resize image without PIL library, cannot import PIL library without downloading from Command Terminal
-        self.food1_image_label = Label(self.food1_frame, text="image here") # image=self.food1_image
+        self.food1_image_label = Label(self.food1_frame, image=self.food1_image, bg=bg_color)
         self.food1_image_label.grid(row=0)
         
         self.food1_price = Label(self.food1_frame, text="$2.50", bg=bg_color, fg=font_color, font=normal_font)
@@ -81,13 +113,14 @@ class Takeaway:
         self.food1_quantity_spinbox = Spinbox(self.food1_frame, from_=0, to=100, increment="1", format="%.0f", fg=font_color, font=normal_font, textvariable=self.food1_quantity, justify="center", width=4, wrap=True)
         self.food1_quantity_spinbox.grid(row=2)
         
-        self.food2 = LabelFrame(self.food_menu_frame, bg=bg_color)
+        # foods 2-8 are replica of food 1, but with unique foods and details from sushi_takeaway_menu.txt file
+        self.food2 = LabelFrame(self.menu_frame, bg=bg_color)
         self.food2.grid(row=0, column=1)
         
-        self.food3 = LabelFrame(self.food_menu_frame, bg=bg_color)
+        self.food3 = LabelFrame(self.menu_frame, bg=bg_color)
         self.food3.grid(row=0, column=2)
         
-        self.food4 = LabelFrame(self.food_menu_frame, bg=bg_color)
+        self.food4 = LabelFrame(self.menu_frame, bg=bg_color)
         self.food4.grid(row=0, column=3)        
         
         # quantity use spinbox
