@@ -175,7 +175,7 @@ class Takeaway:
                 # max food quantity is 100 because sushi takeaway is equipped to cater
                 # for only individuals and small groups up to 10 people
                 # wrap is True so bulk-buyers can go to maximum amount in one click
-                self.food1_quantity_spinbox = Spinbox(self.food1_frame, from_=0, to=100, increment="1",format="%3.0f", fg=self.font_color, font=self.normal_font, textvariable=self.food1_quantity, justify="center", width=4, wrap=True)
+                self.food1_quantity_spinbox = Spinbox(self.food1_frame, from_=0, to=100, increment="1", format="%3.0f", fg=self.font_color, font=self.normal_font, textvariable=self.food1_quantity, justify="center", width=4, wrap=True)
                 self.food1_quantity_spinbox.grid(row=2, column=1)
                 
                 # foods 2-8 are replica of food 1, but with unique foods and details from sushi_takeaway_menu.txt file
@@ -397,83 +397,83 @@ class Takeaway:
         num_checking = self.food1_quantity.get().strip()
         if not num_checking.isdigit() or not 0 <= int(num_checking) <= 100:
             food_has_error = 1
-            problem_result = self.find_error(num_checking, "[0-9]")
+            problem_result = self.find_error(num_checking, "[0-9 ]")
             self.food1_quantity_spinbox.config(bg=self.error_bg_color)
             
         else:
             # if 1st food's quantity has no error
             # 1st food spinbox's background color is reset
-            self.food1_quantity_spinbox.config(bg=self.bg_color)
+            self.food1_quantity_spinbox.config(bg="#FFFFFF")
             
             num_checking = self.food2_quantity.get().strip()
             if not num_checking.isdigit() or not 0 <= int(num_checking) <= 100:
                 food_has_error = 2
-                problem_result = self.find_error(num_checking, "[0-9]")
+                problem_result = self.find_error(num_checking, "[0-9 ]")
                 self.food2_quantity_spinbox.config(bg=self.error_bg_color)
                 
             else:
                 # if 2nd food's quantity has no error
-                self.food2_quantity_spinbox.config(bg=self.bg_color)
+                self.food2_quantity_spinbox.config(bg="#FFFFFF")
                 
                 num_checking = self.food3_quantity.get().strip()
                 if not num_checking.isdigit() or not 0 <= int(num_checking) <= 100:
                     food_has_error = 3
-                    problem_result = self.find_error(num_checking, "[0-9]")
+                    problem_result = self.find_error(num_checking, "[0-9 ]")
                     self.food3_quantity_spinbox.config(bg=self.error_bg_color)
                     
                 else:
                     # if 3rd food's quantity has no error
-                    self.food3_quantity_spinbox.config(bg=self.bg_color)
+                    self.food3_quantity_spinbox.config(bg="#FFFFFF")
                     
                     num_checking = self.food4_quantity.get().strip()
                     if not num_checking.isdigit() or not 0 <= int(num_checking) <= 100:
                         food_has_error = 4
-                        problem_result = self.find_error(num_checking, "[0-9]")
+                        problem_result = self.find_error(num_checking, "[0-9 ]")
                         self.food4_quantity_spinbox.config(bg=self.error_bg_color)
                     
                     else:
                     # if 4th food's quantity has no error
-                        self.food4_quantity_spinbox.config(bg=self.bg_color)
+                        self.food4_quantity_spinbox.config(bg="#FFFFFF")
                         
                         num_checking = self.food5_quantity.get().strip()
                         if not num_checking.isdigit() or not 0 <= int(num_checking) <= 100:
                             food_has_error = 5
-                            problem_result = self.find_error(num_checking, "[0-9]")
+                            problem_result = self.find_error(num_checking, "[0-9 ]")
                             self.food5_quantity_spinbox.config(bg=self.error_bg_color)
                     
                         else:
                             # if 5th food's quantity has no error
-                            self.food5_quantity_spinbox.config(bg=self.bg_color)
+                            self.food5_quantity_spinbox.config(bg="#FFFFFF")
                             
                             num_checking = self.food6_quantity.get().strip()
                             if not num_checking.isdigit() or not 0 <= int(num_checking) <= 100:
                                 food_has_error = 6
-                                problem_result = self.find_error(num_checking, "[0-9]")
+                                problem_result = self.find_error(num_checking, "[0-9 ]")
                                 self.food6_quantity_spinbox.config(bg=self.error_bg_color)
                     
                             else:
                                 # if 6th food's quantity has no error
-                                self.food6_quantity_spinbox.config(bg=self.bg_color)
+                                self.food6_quantity_spinbox.config(bg="#FFFFFF")
                                 
                                 num_checking = self.food7_quantity.get().strip()
                                 if not num_checking.isdigit() or not 0 <= int(num_checking) <= 100:
                                     food_has_error = 7
-                                    problem_result = self.find_error(num_checking, "[0-9]")
+                                    problem_result = self.find_error(num_checking, "[0-9 ]")
                                     self.food7_quantity_spinbox.config(bg=self.error_bg_color)
                     
                                 else:
                                     # if 7th food's quantity has no error
-                                    self.food7_quantity_spinbox.config(bg=self.bg_color)
+                                    self.food7_quantity_spinbox.config(bg="#FFFFFF")
                                     
                                     num_checking = self.food8_quantity.get().strip()
                                     if not num_checking.isdigit() or not 0 <= int(num_checking) <= 100:
                                         food_has_error = 8
-                                        problem_result = self.find_error(num_checking, "[0-9]")
+                                        problem_result = self.find_error(num_checking, "[0-9 ]")
                                         self.food8_quantity_spinbox.config(bg=self.error_bg_color)
                         
                                     else:
                                         # if 8th food's quantity has no error
-                                        self.food8_quantity_spinbox.config(bg=self.bg_color)
+                                        self.food8_quantity_spinbox.config(bg="#FFFFFF")
                                         
         error_feedback = f"{problem_result} Only whole numbers from 1-100 accepted."
         return food_has_error, error_feedback
@@ -499,20 +499,45 @@ class Takeaway:
         # check's user's input name for validity
         if self.user_name.get() == "":
             # if user didn't input name
-            self.name_instructions_label.config(text="Please fill in your name", bg=self.error_bg_color, fg=self.error_font_color, font=self.small_heading_font)      
+            self.name_instructions_label.config(text="Please fill in your name", bg=self.error_bg_color, fg=self.error_font_color, font=self.small_heading_font)
+            self.name_textbox.config(bg=self.error_bg_color)
         else:
             # check whether name that user puts in is valid
-            name_problem_result = self.find_error(self.user_name.get(), "[A-Za-z_-. ")
+            name_problem_result = self.find_error(self.user_name.get(), "[A-Za-z. ]")
             if name_problem_result != "" :
                 # there is a problem with user's input name
-                self.name_instructions_label.config(text="name_problem_result", bg=self.error_bg_color, fg=self.error_font_color, font=self.small_heading_font) 
+                self.name_instructions_label.config(text=name_problem_result, bg=self.error_bg_color, fg=self.error_font_color, font=self.small_heading_font) 
+                self.name_textbox.config(bg=self.error_bg_color)
             else:
                 # there is no problem so name instructions are returned to normal
                 self.name_instructions_label.config(text=self.name_instructions_text, fg=self.font_color, bg=self.bg_color, font=self.normal_font, wraplength="400")
+                self.name_textbox.config(bg="#FFFFFF")
+                
+                # use history.txt file by add, otherwise error
     
     def cancel_order(self):
+        # reset foods' quantities and color of spinboxes
         self.food1_quantity.set("0")
+        self.food1_quantity_spinbox.config(bg="#FFFFFF", format="%3.0f")
+        self.food2_quantity.set("0")
+        self.food2_quantity_spinbox.config(bg="#FFFFFF", format="%3.0f")
+        self.food3_quantity.set("0")
+        self.food3_quantity_spinbox.config(bg="#FFFFFF", format="%3.0f")
+        self.food4_quantity.set("0")
+        self.food4_quantity_spinbox.config(bg="#FFFFFF", format="%3.0f")
+        self.food5_quantity.set("0")
+        self.food5_quantity_spinbox.config(bg="#FFFFFF", format="%3.0f")
+        self.food6_quantity.set("0")
+        self.food6_quantity_spinbox.config(bg="#FFFFFF", format="%3.0f")  
+        self.food7_quantity.set("0")
+        self.food7_quantity_spinbox.config(bg="#FFFFFF", format="%3.0f")
+        self.food8_quantity.set("0")
+        self.food8_quantity_spinbox.config(bg="#FFFFFF", format="%3.0f")  
         
+        # reset name textbox and instructions label underneath
+        self.name_instructions_label.config(text=self.name_instructions_text, fg=self.font_color, bg=self.bg_color, font=self.normal_font, wraplength="400")
+        self.name_textbox.config(bg="#FFFFFF")
+        self.user_name.set("")
     
     # Terminate all GUIs
     def quit(self):
