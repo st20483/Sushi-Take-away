@@ -14,7 +14,7 @@ from tkinter import *
 from PIL import ImageTk, Image
 from functools import partial
 import tkinter.scrolledtext as st
-from datetime import date
+from datetime import date, datetime
 import re
 
 
@@ -54,9 +54,9 @@ class Takeaway:
                 self.raw_menu_file = menu_file.read().split("\n")
         
         except FileNotFoundError: 
-            # in case user deletes sushi_takeaway_menu.txt file
+            # in case user deletes or misplaces sushi_takeaway_menu.txt file
             # a text label appears showing problem with solution            
-            self.menu_txt_error_msg = Label(self.takeaway_frame, text="Error: cannot find sushi_takeaway_menu.txt file.\n\nPlease delete and redownload this programme.", font=self.large_font, bg=self.bg_color, fg=self.error_font_color, wraplength="700")
+            self.menu_txt_error_msg = Label(self.takeaway_frame, text="Error: cannot find sushi_takeaway_menu.txt file.\n\nPlease re-install this programme.  Sorry for the inconvenience.", font=self.large_font, bg=self.bg_color, fg=self.error_font_color, wraplength="700")
             self.menu_txt_error_msg.grid(row=0, column=0)        
         
         else:
@@ -90,6 +90,8 @@ class Takeaway:
                 # create food1 profile as a list for the 1st food item
                 # with food name, price, image name and ingredients as items of list
                 self.food1 = self.raw_menu_file[0].split(", ")
+                # set up food1 name
+                self.food1_name = self.food1[0]
                 
                 # set up image path of food 1 for later implementing in widgets
                 # strip function for image name in case there are white spaces around string
@@ -98,38 +100,53 @@ class Takeaway:
                 
                 # foods 2-8 are implemented same way as food 1
                 self.food2 = self.raw_menu_file[1].split(", ")
+                self.food2_name = self.food2[0]
                 
                 self.food2_image_path = "images/" + self.food2[1].strip()
                 self.food2_image = ImageTk.PhotoImage(Image.open(self.food2_image_path).resize((90, 90)))        
                 
                 self.food3 = self.raw_menu_file[2].split(", ")
+                self.food3_name = self.food3[0]
                 
                 self.food3_image_path = "images/" + self.food3[1].strip()
-                self.food3_image = ImageTk.PhotoImage(Image.open(self.food3_image_path).resize((90, 90)))        
+                self.food3_image = ImageTk.PhotoImage(Image.open(self.food3_image_path).resize((90, 90)))
+                
                 self.food4 = self.raw_menu_file[3].split(", ")
+                self.food4_name = self.food4[0]
                 
                 self.food4_image_path = "images/" + self.food4[1].strip()
                 self.food4_image = ImageTk.PhotoImage(Image.open(self.food4_image_path).resize((90, 90)))
                 
                 self.food5 = self.raw_menu_file[4].split(", ")
+                self.food5_name = self.food5[0]
                 
                 self.food5_image_path = "images/" + self.food5[1].strip()
-                self.food5_image = ImageTk.PhotoImage(Image.open(self.food5_image_path).resize((90, 90)))        
+                self.food5_image = ImageTk.PhotoImage(Image.open(self.food5_image_path).resize((90, 90)))     
+                
                 self.food6 = self.raw_menu_file[5].split(", ")
+                self.food6_name = self.food6[0]
                 
                 self.food6_image_path = "images/" + self.food6[1].strip()
-                self.food6_image = ImageTk.PhotoImage(Image.open(self.food6_image_path).resize((90, 90)))        
+                self.food6_image = ImageTk.PhotoImage(Image.open(self.food6_image_path).resize((90, 90))) 
+                
                 self.food7 = self.raw_menu_file[6].split(", ")
+                self.food7_name = self.food7[0]
                 
                 self.food7_image_path = "images/" + self.food7[1].strip()
-                self.food7_image = ImageTk.PhotoImage(Image.open(self.food7_image_path).resize((90, 90)))        
+                self.food7_image = ImageTk.PhotoImage(Image.open(self.food7_image_path).resize((90, 90))) 
+                
                 self.food8 = self.raw_menu_file[7].split(", ")
+                self.food8_name = self.food8[0]
                 
                 self.food8_image_path = "images/" + self.food8[1].strip()
                 self.food8_image = ImageTk.PhotoImage(Image.open(self.food8_image_path).resize((90, 90)))
                 
                 self.name_instructions_text = "This is for identificaton purposes only. You can type either your first name or your initials."
                 
+                # create list containing 8 foods' names
+                self.food_name_list =  [self.food1_name, self.food2_name, self.food3_name, self.food4_name, self.food5_name, self.food6_name, self.food7_name, self.food8_name]      
+                
+                # builing Takeaway GUI with widgets
                 # a separate frame to contain history and information buttons
                 self.top_buttons_frame = Frame(self.takeaway_frame, bg=self.bg_color)
                 self.top_buttons_frame.grid(row=0, pady=5)
@@ -148,14 +165,15 @@ class Takeaway:
                 
                 # provide instructions for users how to open Details GUI
                 self.takeaway_instruction = Label(self.takeaway_frame, text="Come and see our wares!   The maximum amount per food is 100.", bg=self.bg_color, fg=self.font_color, font=self.normal_font)
-                self.takeaway_instruction.grid(row=2) # may have to change this: no Details GUI !!
+                self.takeaway_instruction.grid(row=2)
                 
                 # A frame to hold all food items like a menu
                 self.menu_frame = Frame(self.takeaway_frame, bg=self.bg_color)
                 self.menu_frame.grid(row=3, padx=5)
                 
                 # Contains one food dish and its general details without ingredients and food alerts
-                # LabelFrame for displaying food name and put its details in visual box
+                # LabelFrame for displaying food name and put its details in a box so users 
+                # have easier time processing output of GUI
                 self.food1_frame = LabelFrame(self.menu_frame, bg=self.bg_color, text=self.food1[0].strip().capitalize(), font=self.normal_font, fg=self.font_color, labelanchor="n")
                 self.food1_frame.grid(row=0, column=0, sticky="E"+"W")
                 # sticky tells that this labelframe has maximum area in its grid in menu_frame
@@ -328,16 +346,21 @@ class Takeaway:
                 self.name_label = Label(self.name_frame, text="Name: ", bg=self.bg_color, fg=self.font_color, font=self.normal_font)
                 self.name_label.grid(row=0, column=0, pady=5)
                 
+                # user_name variable used to store input and is in an Entry widget
                 self.user_name = StringVar()
                 self.name_textbox = Entry(self.name_frame, font=self.font_color, bg="white", fg=self.font_color, textvariable=self.user_name)
                 self.name_textbox.grid(row=0, column=1, pady=5)
                 
-                # This widget stays in name_frame as it is related
+                # This label widget stays in name_frame since it's instrucitons
                 self.name_instructions_label = Label(self.name_frame, text=self.name_instructions_text, fg=self.font_color, bg=self.bg_color, font=self.normal_font, wraplength="400")
                 self.name_instructions_label.grid(row=1, column=0, columnspan=2, pady=5)
                 
+                # this label widget is set up to display error message when problem is encountered while user orders
+                self.error_order_label = Label(self.takeaway_frame, fg=self.error_font_color, bg=self.bg_color, font=self.small_heading_font, wraplength="400")
+                self.error_order_label.grid(row=5)
+                
                 self.bottom_buttons_frame = Frame(self.takeaway_frame, bg=self.bg_color)
-                self.bottom_buttons_frame.grid(row=5, pady=10)
+                self.bottom_buttons_frame.grid(row=6, pady=10)
                 
                 self.order_button = Button(self.bottom_buttons_frame, text="Order", font=self.small_heading_font, bg=self.btn_bg_color, fg=self.font_color, width=self.btn_width, height=self.btn_height, command=self.order)
                 self.order_button.grid(row=0, column=0, padx=5)
@@ -358,14 +381,18 @@ class Takeaway:
     def show_total_price(self):
         # check whether quantity of all 8 foods are valid
         food_has_error, error_feedback = self.check_food_quantity()
-        total_price = 0
+        self.total_price = 0
         
         if food_has_error != 0:
             # when there is a problem with food quantity
             self.total_price_label.config(text=error_feedback, bg=self.error_bg_color, fg=self.error_font_color, font=self.normal_font, wraplength="200")
             
+            # return boolean value as check of food quantity validity when ordering
+            return True
+            
         else:
             # when there is no problem
+            # find total order price
             food1_price = int(self.food1_quantity.get()) * float(self.food1[2])
             food2_price = int(self.food2_quantity.get()) * float(self.food2[2])
             food3_price = int(self.food3_quantity.get()) * float(self.food3[2])
@@ -375,11 +402,14 @@ class Takeaway:
             food7_price = int(self.food7_quantity.get()) * float(self.food7[2])
             food8_price = int(self.food8_quantity.get()) * float(self.food8[2])
 
-            total_price = food1_price + food2_price + food3_price + food4_price + food5_price + food6_price + food7_price + food8_price
+            self.total_price = food1_price + food2_price + food3_price + food4_price + food5_price + food6_price + food7_price + food8_price
             
-            self.total_price_label.config(text="${:.2f}".format(total_price), bg=self.bg_color, fg=self.font_color, font=self.small_heading_font)
+            # show total price on designated label
+            self.total_price_label.config(text="${:.2f}".format(self.total_price), bg=self.bg_color, fg=self.font_color, font=self.small_heading_font)
     
-            
+            # return boolean value as check of food quantity validity when ordering
+            return False
+        
         
     def check_food_quantity(self):
         # in case of user typing food quantity in textbox of spinbox, this functions 
@@ -389,6 +419,7 @@ class Takeaway:
         # food_has_error variable stores food item's order to later address in an error message 
         food_has_error = 0
         problem_result = ""
+        self.foods_ordered_list = []
         
         # only whole numbers 0-100 is accepted:
         # food quantity is stripped to remove spaces in front or back of number that can
@@ -405,6 +436,8 @@ class Takeaway:
             # if 1st food's quantity has no error
             # 1st food spinbox's background color is reset
             self.food1_quantity_spinbox.config(bg="#FFFFFF")
+            self.foods_ordered_list.append(num_checking)
+            
             
             num_checking = self.food2_quantity.get().strip()
             if not num_checking.isdigit() or not 0 <= int(num_checking) <= 100:
@@ -415,6 +448,7 @@ class Takeaway:
             else:
                 # if 2nd food's quantity has no error
                 self.food2_quantity_spinbox.config(bg="#FFFFFF")
+                self.foods_ordered_list.append(num_checking)
                 
                 num_checking = self.food3_quantity.get().strip()
                 if not num_checking.isdigit() or not 0 <= int(num_checking) <= 100:
@@ -425,6 +459,7 @@ class Takeaway:
                 else:
                     # if 3rd food's quantity has no error
                     self.food3_quantity_spinbox.config(bg="#FFFFFF")
+                    self.foods_ordered_list.append(num_checking)
                     
                     num_checking = self.food4_quantity.get().strip()
                     if not num_checking.isdigit() or not 0 <= int(num_checking) <= 100:
@@ -435,6 +470,7 @@ class Takeaway:
                     else:
                     # if 4th food's quantity has no error
                         self.food4_quantity_spinbox.config(bg="#FFFFFF")
+                        self.foods_ordered_list.append(num_checking)
                         
                         num_checking = self.food5_quantity.get().strip()
                         if not num_checking.isdigit() or not 0 <= int(num_checking) <= 100:
@@ -445,6 +481,7 @@ class Takeaway:
                         else:
                             # if 5th food's quantity has no error
                             self.food5_quantity_spinbox.config(bg="#FFFFFF")
+                            self.foods_ordered_list.append(num_checking)
                             
                             num_checking = self.food6_quantity.get().strip()
                             if not num_checking.isdigit() or not 0 <= int(num_checking) <= 100:
@@ -455,6 +492,7 @@ class Takeaway:
                             else:
                                 # if 6th food's quantity has no error
                                 self.food6_quantity_spinbox.config(bg="#FFFFFF")
+                                self.foods_ordered_list.append(num_checking)
                                 
                                 num_checking = self.food7_quantity.get().strip()
                                 if not num_checking.isdigit() or not 0 <= int(num_checking) <= 100:
@@ -465,6 +503,7 @@ class Takeaway:
                                 else:
                                     # if 7th food's quantity has no error
                                     self.food7_quantity_spinbox.config(bg="#FFFFFF")
+                                    self.foods_ordered_list.append(num_checking)
                                     
                                     num_checking = self.food8_quantity.get().strip()
                                     if not num_checking.isdigit() or not 0 <= int(num_checking) <= 100:
@@ -475,6 +514,7 @@ class Takeaway:
                                     else:
                                         # if 8th food's quantity has no error
                                         self.food8_quantity_spinbox.config(bg="#FFFFFF")
+                                        self.foods_ordered_list.append(num_checking)
                                         
         error_feedback = f"{problem_result} Only whole numbers from 1-100 accepted."
         return food_has_error, error_feedback
@@ -495,13 +535,70 @@ class Takeaway:
     def order(self):
         # in case the user doesn't press the 'show price' button, pressing order button would automatically 
         # check foods' quantities validity and show the order's price 
-        self.show_total_price()
+        check_quantity = self.show_total_price()
+        
+        # check validity of user's name
+        check_name = self.check_user_name()
+        
+        if check_quantity is False and check_name is False and self.total_price != 0:
+            # if no error is found in user's input name, programme continues
+            # a string of order's information is created before being written on history.txt file
+            # string's order is user name, data and time of order, quantities of foods ordered and total price
+            order_string = ""
+            order_string += f"{self.user_name.get()}, "
+            
+            # call function to get date and time at order and add to order_string variable
+            current_date_time = self.get_date_time()
+            order_string += f"{current_date_time}, "
+            
+            # create variables to store foods' quantities ordered and types of food ordered
+            foods_ordered_string = ""
+            food_ordered_index = -1
+            
+            for food_quantity in self.foods_ordered_list:
+                if food_quantity == "0":
+                    food_ordered_index += 1
+                    continue
+                else:
+                    foods_ordered_string += f"{self.food_name_list[food_ordered_index]} = {food_quantity}; "
+                    food_ordered_index += 1
+            
+            # add foods ordered to order_string variable
+            order_string += f"[{foods_ordered_string}], "
+            
+            # add total price to order_string variable
+            order_string += f"${str(format(self.total_price, '.2f'))} \n"
+            
+            try:
+                # check if sushi_takeaway_history.txt file is available in sushi_takeaway folder
+                with open("sushi_takeaway_history.txt", "r") as history_file:
+                    # if history.txt file is available, order string is added to file
+                    history_file.read()
+                    
+            except: 
+                # in the case history.txt file is deleted or misplaces in different folder by mistake
+                self.error_order_label.config(text="Error encountered: sushi_takeaway_history.txt file missing. Please re-install the programme. Sorry for the inconvenience.", bg=self.error_bg_color)
+                
+            else:
+                self.error_order_label.config(text="Order successful", bg=self.bg_color)
+                with open("sushi_takeaway_history.txt", "a") as history_file:
+                    history_file.write(order_string)
+                
+        elif check_quantity is False and check_name is False and self.total_price == 0:
+            # if all variables are valid but the user hasn't increased quantity of any food to more than 0
+            self.error_order_label.config(text="You haven't chosen any food yet! Please add some foods before ordering", bg=self.error_bg_color)
+                    
+    def check_user_name(self):
+        # set up a bollean variable for later recognition of whether to continue order function
+        name_has_error = False
         
         # check's user's input name for validity
         if self.user_name.get() == "":
             # if user didn't input name
             self.name_instructions_label.config(text="Please fill in your name", bg=self.error_bg_color, fg=self.error_font_color, font=self.small_heading_font)
             self.name_textbox.config(bg=self.error_bg_color)
+            name_has_error = True
+            
         else:
             # check whether name that user puts in is valid
             name_problem_result = self.find_error(self.user_name.get(), "[A-Za-z. ]")
@@ -509,12 +606,30 @@ class Takeaway:
                 # there is a problem with user's input name
                 self.name_instructions_label.config(text=name_problem_result, bg=self.error_bg_color, fg=self.error_font_color, font=self.small_heading_font) 
                 self.name_textbox.config(bg=self.error_bg_color)
+                name_has_error = True
+                
             else:
                 # there is no problem so name instructions are returned to normal
                 self.name_instructions_label.config(text=self.name_instructions_text, fg=self.font_color, bg=self.bg_color, font=self.normal_font, wraplength="400")
                 self.name_textbox.config(bg="#FFFFFF")
-                
-                # use history.txt file by add, otherwise error
+                name_has_error = False # reset this variable
+        
+        # return boolean value as check of input name validity when ordering
+        return name_has_error
+    
+    # retrieves date and creates DD_MM_YYYY string
+    def get_date_time(self):
+        # get order's date
+        today = date.today()
+        day = today.strftime("%d")
+        month = today.strftime("%m")
+        year = today.strftime("%Y")
+        
+        # get order's time
+        now = datetime.now()
+        time = now.strftime("%H:%M:%S")    
+        
+        return f"{day}/{month}/{year} {time}"    
     
     def cancel_order(self):
         # reset foods' quantities and color of spinboxes
@@ -535,6 +650,10 @@ class Takeaway:
         self.food8_quantity.set("0")
         self.food8_quantity_spinbox.config(bg="#FFFFFF", format="%3.0f")  
         
+        # reset total price of order shown
+        self.total_price = 0
+        self.total_price_label.config(text="${:.2f}".format(self.total_price), bg=self.bg_color, fg=self.font_color, font=self.small_heading_font)
+        
         # reset name textbox and instructions label underneath
         self.name_instructions_label.config(text=self.name_instructions_text, fg=self.font_color, bg=self.bg_color, font=self.normal_font, wraplength="400")
         self.name_textbox.config(bg="#FFFFFF")
@@ -549,7 +668,7 @@ if __name__ == "__main__":
     # set up main GUI as root with title and size/geometry and run programme    
     root = Tk()
     root.title("Sushi Takeaway")
-    root.geometry("670x730") 
+    root.geometry("670x760") 
     root.resizable(0, 0)
     Takeaway()
     root.mainloop()
