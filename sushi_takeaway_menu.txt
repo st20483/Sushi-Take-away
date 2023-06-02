@@ -1,0 +1,10 @@
+# Follow this format: food name, food image name, price, "ingredients", "food and allergy alerts". Do NOT touch these two hashtag # lines. Max 8 food items.
+# Please put comma , between every part and put ingredients and food alerts in quotation " " symbols with NO comma. If unsure, call programmer.
+salmon sushi, salmon_sushi.jpg, 2.50, "salmon seaweed rice", "seafood"
+tuna sushi, tuna_sushi.jpg, 2.00, "tuna seaweed rice", "seafood"
+salmon avocado sushi, salmon_avocado_sushi.jpg, 2.70, "salmon avocado seaweed rice", "seafood avocado"
+salmon egg sushi, salmon_egg_sushi.jpg, 3.50, "salmon egg seaweed rice", "seafood egg"
+tuna avocado sushi, tuna_avocado_sushi.jpg, 2.20, "tuna avocado seaweed rice", "seafood avocado"
+shrimp cucumber sushi, shrimp_sushi.jpg, 1.00, "shrimp cucumber seaweed rice", "seafood cucumber"
+salmon sashimi, salmon_sashimi.jpg, 1.80, "salmon", "seafood"
+tuna sashimi, tuna_sashimi.jpg, 1.20, "tuna", "seafood"
