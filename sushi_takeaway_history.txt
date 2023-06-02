@@ -1,0 +1,1 @@
+# string's order is: user name, data and time of order, [quantities of foods ordered], total price
