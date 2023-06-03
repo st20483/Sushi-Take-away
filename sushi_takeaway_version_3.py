@@ -26,25 +26,31 @@ class History:
         """Initialising variables and setting up Takeaway GUI
         """ 
         
-        # common format for regular and large texts
-        # large texts are found in headings and buttons
-        self.normal_font = ("Helvetica 12")
-        self.small_heading_font = ("Helvetica 14 bold")
-        self.large_font = ("Helvetica 17 bold")
+        # init_vars dictionary stores common formats of the programme
+        self.init_vars = {
+        # common format for normal, medium and large texts
+        # large texts are found in headings
+        # medium texts are found in buttons and error messages        
+                          "normal_font" : "Helvetica 12", 
+                          "medium_font" : "Helvetica 14 bold",
+                          "large_font" : "Helvetica 17 bold",
+                          
         
-        # color palette that is friendly to colour-blind people
-        self.btn_bg_color = "#7CA1CC"
-        self.error_bg_color = "#EEBAB4"
-        self.bg_color = "#A8B6CC"
-        self.error_font_color = "#F05039"
-        self.font_color = "#141414"
+        # background, button and error components use colour-blind friendly 
+        # color palette
+                         "btn_bg_color" : "#7CA1CC",
+                         "error_bg_color" : "#EEBAB4",
+                         "bg_color" : "#A8B6CC",
+                         "error_font_color" : "#F05039",
+                         "font_color" : "#141414",
         
-        # height and weight variables for button size
-        self.btn_width="16"
-        self.btn_height="0"
+        # height and weight variables customizable for almost all buttons' size
+        # in programme
+                         "btn_width" : "16",
+                         "btn_height" : "0"}
         
         # set up main GUI frame        
-        self.history_frame = Frame(padx = 10, pady = 10, bg=self.bg_color)
+        self.history_frame = Frame(padx = 10, pady = 10, bg=self.init_vars["bg_color"])
         self.history_frame.grid()        
         
         try: 
@@ -55,7 +61,7 @@ class History:
         except FileNotFoundError: 
             # in case user deletes or misplaces history.txt file
             # a text label appears showing problem with solution            
-            self.history_txt_error_msg = Label(self.history_frame, text="Error: cannot find sushi_takeaway_history.txt file.\n\nPlease re-install this programme.\n\nSushi Takeaway store information can be accessed by clicking 'Information' button at top right of programme. We are sorry for the inconvenience.", font=self.large_font, bg=self.bg_color, fg=self.error_font_color, wraplength="700")
+            self.history_txt_error_msg = Label(self.history_frame, text="Error: cannot find sushi_takeaway_history.txt file.\n\nPlease re-install this programme.\n\nSushi Takeaway store information can be accessed by clicking 'Information' button at top right of programme. We are sorry for the inconvenience.", font=self.init_vars["large_font"], bg=self.init_vars["bg_color"], fg=self.init_vars["error_font_color"], wraplength="700")
             self.history_txt_error_msg.grid(row=0, column=0)        
         
         else:
@@ -73,20 +79,23 @@ class History:
                 # in case sushi manager incorrectly edits sushi_takeaway_menu.txt file
                 # by altering comment lines
                 # error message shows up with problem user encounters and solution
-                self.history_txt_error_msg = Label(self.history_frame, text="Error in history text file.\n\nPlease contact us to solve the problem. Sushi takeaway store information can be accessed by closing this window and clicking 'Information' button at top right of programme.\n\nWe are sorry for the inconvenience.", font=self.large_font, bg=self.bg_color, fg=self.error_font_color, justify="center", wraplength="670")
+                self.history_txt_error_msg = Label(self.history_frame, text="Error in history text file.\n\nPlease contact us to solve the problem. Sushi takeaway store information can be accessed by closing this window and clicking 'Information' button at top right of programme.\n\nWe are sorry for the inconvenience.", font=self.init_vars["large_font"], bg=self.init_vars["bg_color"], fg=self.init_vars["error_font_color"], justify="center", wraplength="670")
                 self.menu_txt_error_msg.grid(row=0)   
             
             else:
+                # blank line at bottom of history.txt file is removed
+                self.raw_history_file.pop(-1)
+                
                 # History GUI is set up using Tkinter widgets
-                self.history_heading = Label(self.history_frame, text="Past Orders on Sushi Takeaway", font=self.large_font, fg=self.font_color, bg=self.bg_color)
+                self.history_heading = Label(self.history_frame, text="Past Orders on Sushi Takeaway", font=self.init_vars["large_font"], fg=self.init_vars["font_color"], bg=self.init_vars["bg_color"])
                 self.history_heading.grid(row=0, padx=5, pady=5)
                 
                 # instructions stating how to use scrolled text
-                self.history_instructions = Label(self.history_frame, text="Below displays all past orders made from your device. Scroll down for more", font=self.small_heading_font, fg=self.font_color, bg=self.bg_color, wraplength="400")
+                self.history_instructions = Label(self.history_frame, text="Below displays all past orders made from your device. Scroll down for more", font=self.init_vars["medium_font"], fg=self.init_vars["font_color"], bg=self.init_vars["bg_color"], wraplength="400")
                 self.history_instructions.grid(row=1, pady=5) 
                 
                 # set up scrolled text widget to display all past orders
-                self.display_past_orders = st.ScrolledText(self.history_frame, width=40, height=5, font=self.normal_font, wrap=WORD)
+                self.display_past_orders = st.ScrolledText(self.history_frame, width=40, height=5, font=self.init_vars["normal_font"], wrap=WORD, fg=self.init_vars["font_color"])
                 self.display_past_orders.grid(row=3)
                 
                 
@@ -97,26 +106,27 @@ class History:
                 # history of past orders are reversed to show latest orders at the top
                 # in reverse-chronological order
                 self.raw_history_file.reverse()
+                print(self.raw_history_file)
                 
                 # put all past orders in a string for display
                 self.display_string = ""
                 for item in self.raw_history_file:
-                    self.display_string += f"{item}\n"
+                    self.display_string += f"{item.strip()}\n"
+                    # item is stripped to remove any trailing white spaces
                 
                 if self.display_string == "\n":
                     # if there is no past order, an error string is displayed
-                    print("nothing...")
-                    self.display_past_orders.insert(INSERT, "You have not made an order... Please return once you have made at least one order. Thank you.")
-                    self.display_past_orders.configure(state ='disabled') 
+                    self.display_past_orders.insert(INSERT, "You have not ordered any foods... Please return once you have made at least one order. Thank you.")
+                    self.display_past_orders.configure(state ='disabled', bg=self.init_vars["error_bg_color"]) 
                     
                 else:
                     # If there are past orders to be displayed
                     self.display_past_orders.insert(INSERT, self.display_string)
-                    self.display_past_orders.configure(state ='disabled')                
+                    self.display_past_orders.configure(state ='disabled', bg="#FFFFFF")                
             
         finally:
             # a button to close programme is present whether there is an error or not, so users can access information 
-            self.close_history = Button(self.history_frame, text="Close window", bg=self.btn_bg_color, fg=self.font_color, font=self.small_heading_font, command=quit)
+            self.close_history = Button(self.history_frame, text="Close window", bg=self.init_vars["btn_bg_color"], fg=self.init_vars["font_color"], font=self.init_vars["medium_font"], command=quit, width=self.init_vars["btn_width"], height=self.init_vars["btn_height"])
             self.close_history.grid(row=4, padx=10, pady=10)
     
     # Terminate all GUIs
