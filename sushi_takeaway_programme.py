@@ -83,8 +83,8 @@ class Takeaway:
         except FileNotFoundError: 
             # in case user deletes or misplaces sushi_takeaway_menu.txt file
             # an error text label appears showing problem with solution            
-            self.menu_txt_error_msg = Label(self.menu_frame, text="Error: cannot find sushi_takeaway_menu.txt file.\n\nPlease re-install this programme.\n\nSushi Takeaway store information can be accessed by clicking 'Information' button at top right of programme. We are sorry for the inconvenience.", font=self.init_vars["large_font"], bg=self.init_vars["bg_color"], fg=self.init_vars["error_font_color"], wraplength="670")
-            self.menu_txt_error_msg.grid(row=0, column=0)
+            self.menu_txt_error_msg = Label(self.menu_frame, text="Error: cannot find sushi_takeaway_menu.txt file.\n\nPlease re-install this programme.\n\nSushi Takeaway store information can be accessed by clicking 'Information' button at top right of programme. We are sorry for the inconvenience.", font=self.init_vars["large_font"], bg=self.init_vars["error_bg_color"], fg=self.init_vars["error_font_color"], wraplength="670")
+            self.menu_txt_error_msg.grid(row=0, pady=10)
             
             # error message is in menu frame so that if there is any issue, user 
             # can go to Information GUI for access of aTkeaway store's phone 
@@ -109,8 +109,8 @@ class Takeaway:
                 # in case comment lines are altered and may cause programme 
                 # unable to run
                 # error message shows up with problem encountered and solution
-                self.menu_txt_error_msg = Label(self.menu_frame, text="Error in menu text file.\n\nPlease contact us to solve the problem. Sushi takeaway store information can be accessed by clicking 'Information' button at top right of programme.\n\nWe are sorry for the inconvenience.", font=self.init_vars["large_font"], bg=self.init_vars["bg_color"], fg=self.init_vars["error_font_color"], justify="center", wraplength="670")
-                self.menu_txt_error_msg.grid(row=0)            
+                self.menu_txt_error_msg = Label(self.menu_frame, text="Error in menu.txt file.\n\nPlease re-install the programme.\n\nIf problem persists, please contact us to solve the problem. Sushi takeaway store information can be accessed by clicking 'Information' button at top right of programme.\n\nWe are sorry for the inconvenience.", font=self.init_vars["large_font"], bg=self.init_vars["error_bg_color"], fg=self.init_vars["error_font_color"], justify="center", wraplength="670")
+                self.menu_txt_error_msg.grid(row=0, pady=10)            
                 
             else:   
                 # create food1 profile as a list for the 1st food item
@@ -615,7 +615,7 @@ class Takeaway:
                 # error message is shown on top of menu frame, name frame and
                 # order button to inform that users cannot order foods anymore
                 self.error_order_label.config(text="Error encountered: cannot find sushi_takeaway_history.txt file. Please re-install the programme.\n\nSushi Takeaway store information can be accessed by clicking 'Information' button at top right of programme. We are sorry for the inconvenience.", bg=self.init_vars["error_bg_color"], wraplength="670")
-                self.error_order_label.grid(row=3, rowspan=4, sticky='N' + 'S')
+                self.error_order_label.grid(row=3, rowspan=4, sticky='N' + 'S', pady=10)
                 # widget widget is put in rowspan from menu frame to order buttons 
                 # widget is lifted to be on top of frames and buttons widgets.
                 self.error_order_label.lift()
@@ -768,8 +768,7 @@ class Takeaway:
         self.destroy()
     
 class Information:
-    """ This is the main GUI window that takes food orders from users. Two 
-    buttons and images give access to three other GUIs
+    """ This GUI displays information about sushi takeaway restaurant
     """
     
     def __init__(self, partner):
@@ -798,8 +797,8 @@ class Information:
         except FileNotFoundError: 
             # in case user deletes or misplaces sushi_takeaway_information.txt file
             # a red text label appears showing problem with solution            
-            self.info_txt_error_msg = Label(self.info_frame, text="Error: cannot find sushi_takeaway_information.txt file.\n\nPlease re-install this programme.\n\nWe are sorry for the inconvenience.", font=partner.init_vars["large_font"], bg=partner.init_vars["bg_color"], fg=partner.init_vars["error_font_color"], wraplength="700")
-            self.info_txt_error_msg.grid(row=0, column=0)        
+            self.info_txt_error_msg = Label(self.info_frame, text="Error: cannot find sushi_takeaway_information.txt file.\n\nPlease re-install this programme.\n\nWe are sorry for the inconvenience.", font=partner.init_vars["large_font"], bg=partner.init_vars["error_bg_color"], fg=partner.init_vars["error_font_color"], wraplength="700")
+            self.info_txt_error_msg.grid(row=0, column=0, pady=10)        
         
         else:
             # if information.txt file is available
@@ -827,8 +826,8 @@ class Information:
         self.info_box.destroy()    
 
 class History:
-    """ This is the main GUI window that takes food orders from users. Two 
-    buttons and images give access to three other GUIs
+    """ This GUI displays past orders stored in history.txt file onto a 
+    ScrolledText widget
     """
     
     def __init__(self, partner):
@@ -857,8 +856,8 @@ class History:
         except FileNotFoundError: 
             # in case user deletes or misplaces history.txt file
             # a red text label appears showing problem with solution            
-            self.history_txt_error_msg = Label(self.history_frame, text="Error: cannot find sushi_takeaway_history.txt file.\n\nPlease re-install this programme.\n\nSushi Takeaway store information can be accessed by clicking 'Information' button at top right of programme. We are sorry for the inconvenience.", font=partner.init_vars["large_font"], bg=partner.init_vars["bg_color"], fg=partner.init_vars["error_font_color"], wraplength="700")
-            self.history_txt_error_msg.grid(row=0, column=0)        
+            self.history_txt_error_msg = Label(self.history_frame, text="Error: cannot find sushi_takeaway_history.txt file.\n\nPlease re-install this programme.\n\nSushi Takeaway store information can be accessed by clicking 'Information' button at top right of programme. We are sorry for the inconvenience.", font=partner.init_vars["large_font"], bg=partner.init_vars["error_bg_color"], fg=partner.init_vars["error_font_color"], wraplength="700")
+            self.history_txt_error_msg.grid(row=0, column=0, pady=10)        
         
         else:
             # if history.txt file is available
@@ -877,8 +876,8 @@ class History:
                 # in case sushi manager incorrectly edits sushi_takeaway_menu.txt file
                 # by altering comment lines
                 # error message shows up with problem user encounters and solution
-                self.history_txt_error_msg = Label(self.history_frame, text="Error in history text file.\n\nPlease contact us to solve the problem. Sushi takeaway store information can be accessed by closing this window and clicking 'Information' button at top right of programme.\n\nWe are sorry for the inconvenience.", font=partner.init_vars["large_font"], bg=partner.init_vars["bg_color"], fg=partner.init_vars["error_font_color"], justify="center", wraplength="670")
-                self.menu_txt_error_msg.grid(row=0)   
+                self.history_txt_error_msg = Label(self.history_frame, text="Error in history text file.\n\nPlease contact us to solve the problem. Sushi takeaway store information can be accessed by closing this window and clicking 'Information' button at top right of programme.\n\nWe are sorry for the inconvenience.", font=partner.init_vars["large_font"], bg=partner.init_vars["error_bg_color"], fg=partner.init_vars["error_font_color"], justify="center", wraplength="670")
+                self.menu_txt_error_msg.grid(row=0, pady=10)   
             
             else:
                 # blank line at bottom of history.txt file is removed
