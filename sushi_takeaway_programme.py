@@ -3,9 +3,6 @@ food. Past orders can be seen in History GUI. If unsatisfactory, users can
 cancel order. Information GUI tells users how to use programme. Details GUI
 shows more details about the food when user clicks on image of one food.
 """
-# version 1 testing: Takeaway GUI
-# This GUI is the main GUI of the programme.
-# Information GUI and History GUI can be accessed from this GUI
 
 # Import all needed libraries for the programme
 import os
@@ -817,13 +814,15 @@ class Information:
         finally:
             # no matter if information text is available or not, user can close Information 
             # window with "Close window" button and then close programme, or continue ordering 
-            self.close_info = Button(self.info_frame, text="Close window", bg=partner.init_vars["btn_bg_color"], fg=partner.init_vars["font_color"], font=partner.init_vars["medium_font"], command=quit, width=partner.init_vars["btn_width"], height=partner.init_vars["btn_height"])
+            self.close_info = Button(self.info_frame, text="Close window", bg=partner.init_vars["btn_bg_color"], fg=partner.init_vars["font_color"], font=partner.init_vars["medium_font"], command=partial(self.dismiss_info_gui, partner), width=partner.init_vars["btn_width"], height=partner.init_vars["btn_height"])
             self.close_info.grid(row=3, padx=10, pady=10)
             
     # Terminate Information GUI
     def dismiss_info_gui(self, partner):
+        self.info_box.destroy()
+        # Information button in Takeaway GUI is disabled to prevent spamming of
+        # Information GUI windows  
         partner.information_button.config(state=NORMAL)
-        self.info_box.destroy()    
 
 class History:
     """ This GUI displays past orders stored in history.txt file onto a 
@@ -899,7 +898,6 @@ class History:
                 # history of past orders are reversed to show latest orders at the top
                 # in reverse-chronological order
                 self.raw_history_file.reverse()
-                print(self.raw_history_file)
                 
                 # put all past orders in a string for display
                 self.display_string = ""
@@ -907,7 +905,7 @@ class History:
                     self.display_string += f"{item.strip()}\n"
                     # item is stripped to remove any trailing white spaces
                 
-                if self.display_string == "\n":
+                if self.display_string == "":
                     # if there is no past order, an error string is displayed
                     self.display_past_orders.insert(INSERT, "You have not ordered any foods... Please return once you have made at least one order. Thank you.")
                     self.display_past_orders.configure(state ='disabled', bg=partner.init_vars["error_bg_color"]) 
@@ -922,20 +920,22 @@ class History:
         finally:
             # a button to close programme is present whether there is an error or 
             # not, so users can access restaurant information and contact them
-            self.close_history = Button(self.history_frame, text="Close window", bg=partner.init_vars["btn_bg_color"], fg=partner.init_vars["font_color"], font=partner.init_vars["medium_font"], command=quit, width=partner.init_vars["btn_width"], height=partner.init_vars["btn_height"])
+            self.close_history = Button(self.history_frame, text="Close window", bg=partner.init_vars["btn_bg_color"], fg=partner.init_vars["font_color"], font=partner.init_vars["medium_font"], command=partial(self.dismiss_history_gui, partner), width=partner.init_vars["btn_width"], height=partner.init_vars["btn_height"])
             self.close_history.grid(row=4, padx=10, pady=10)
     
-    # Terminate all GUIs
+    # Terminate History GUI
     def dismiss_history_gui(self, partner):
-        partner.history_button.config(state=NORMAL)
         self.history_box.destroy()
+        # History button in Takeaway GUI is disabled to prevent spamming of History
+        # GUI windows
+        partner.history_button.config(state=NORMAL)
 
 # main routine
 if __name__ == "__main__":
     # set up Takeaway GUI as root with title and geometry set, then run programme    
     root = Tk()
     root.title("Sushi Takeaway")
-    root.geometry("670x730") 
+    #root.geometry("670x730") 
     root.resizable(0, 0)
     Takeaway()
     root.mainloop()
